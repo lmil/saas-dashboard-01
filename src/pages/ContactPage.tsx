@@ -1,4 +1,5 @@
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 type ContactFormData = {
   name: string;
@@ -7,13 +8,21 @@ type ContactFormData = {
 };
 
 function ContactPage() {
-  const { register, handleSubmit, formState } = useForm<ContactFormData>();
+  const { register, handleSubmit, formState, reset } =
+    useForm<ContactFormData>();
   const { errors } = formState;
 
-  console.log("Errors: ", errors);
-  function onSubmit(data: ContactFormData) {
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const onSubmit: SubmitHandler<ContactFormData> = (data) => {
     console.log("Form submitted with data: ", data);
-  }
+    setIsSuccess(true);
+    reset();
+
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 3000);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
@@ -100,6 +109,13 @@ function ContactPage() {
           >
             Send Message
           </button>
+
+          {isSuccess && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
+              <p className="font-semibold">✅ Success!</p>
+              <p className="text-sm">Your message has been sent successfully</p>
+            </div>
+          )}
         </form>
       </div>
     </div>
