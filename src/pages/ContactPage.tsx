@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
-type ContactFormData = {
-  name: string;
-  email: string;
-  message: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactSchema, type ContactFormData } from "../schemas/contactSchema";
 
 function ContactPage() {
-  const { register, handleSubmit, formState, reset } =
-    useForm<ContactFormData>();
-  const { errors } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
 
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -43,7 +44,7 @@ function ContactPage() {
             <input
               id="name"
               type="text"
-              {...register("name", { required: "Name is required" })}
+              {...register("name")}
               className="border w-full px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
               placeholder="Your name"
             />
@@ -61,13 +62,7 @@ function ContactPage() {
             <input
               id="email"
               type="text"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Please enter a valid email",
-                },
-              })}
+              {...register("email")}
               className="border w-full px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
               placeholder="your@email.com"
             />
@@ -85,13 +80,7 @@ function ContactPage() {
               Message
             </label>
             <textarea
-              {...register("message", {
-                required: "Message is required",
-                minLength: {
-                  value: 10,
-                  message: "Message must be at least 10 characters",
-                },
-              })}
+              {...register("message")}
               className="border w-full px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
               rows={4}
               id="message"

@@ -20,10 +20,20 @@ function Navigation() {
             className={({ isActive }) =>
               isActive
                 ? "font-semibold text-blue-600 border-b-2 pb-1 border-blue-600"
-                : "text-gray-600 pb-1 hover:text-blue-600 transition pb-1"
+                : "text-gray-600 pb-1 hover:text-blue-600 transition"
             }
           >
             Contact
+          </NavLink>
+          <NavLink
+            to="/signup"
+            className={({ isActive }) =>
+              isActive
+                ? "font-semibold text-blue-600 border-b-2 pb-1 border-blue-600"
+                : "text-gray-600 pb-1 hover:text-blue-600 transition"
+            }
+          >
+            Sign Up
           </NavLink>
         </div>
       </div>
