@@ -30,48 +30,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log("🚪 User logged out");
   }
 
-  console.log("🔐 Auth State:", { isAuthenticated, user });
-
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {/* TEMPORARY TEST BUTTON - We'll remove this later! */}
-      <div
-        style={{
-          position: "fixed",
-          top: 70,
-          right: 10,
-          zIndex: 9999,
-          display: "flex",
-          gap: "10px",
-        }}
-      >
-        <button
-          onClick={() => login("test@example.com", "TestUser")}
-          style={{
-            background: "green",
-            color: "white",
-            padding: "10px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          🧪 TEST LOGIN
-        </button>
-        <button
-          onClick={logout}
-          style={{
-            background: "red",
-            color: "white",
-            padding: "10px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          🚪 TEST LOGOUT
-        </button>
-      </div>
       {children}
     </AuthContext.Provider>
   );
