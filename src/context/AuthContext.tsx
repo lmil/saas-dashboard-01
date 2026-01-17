@@ -9,17 +9,28 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function getInitialUser() {
+  const savedUser = localStorage.getItem("user");
+  if (savedUser) {
+    return JSON.parse(savedUser);
+  }
+  return null;
+}
 
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<{ email: string; username: string } | null>(
-    null
+    getInitialUser
   );
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("user") !== null;
+  });
+  const [loading, setLoading] = useState(true); // Add this!
 
   function login(email: string, username: string) {
     const userData = { email, username };
     setUser(userData);
     setIsAuthenticated(true);
+    localStorage.setItem("user", JSON.stringify(userData));
     console.log("✅ User logged in: ", userData);
   }
 
@@ -27,6 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   function logout() {
     setUser(null);
     setIsAuthenticated(false);
+    localStorage.removeItem("user");
     console.log("🚪 User logged out");
   }
 
