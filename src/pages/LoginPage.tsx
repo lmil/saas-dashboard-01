@@ -2,10 +2,17 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type LoginFormData, loginSchema } from "../schemas/loginSchema";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Get auth functions and navigate
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   // Setup React Hook Form with Zod validation
   const {
     register,
@@ -20,12 +27,20 @@ function LoginPage() {
     setIsSubmitting(true);
     setSuccessMessage("");
 
-    // sumulate API call
+    const username = data.email.split("@")[0];
+
+    //simulate brief loading(in)
     setTimeout(() => {
-      console.log("✅ Login successful: ", data);
-      setSuccessMessage("login successfull");
+      // call login from authcontext
+      login(data.email, username);
+
+      setSuccessMessage("Login successful! Redirecting...");
       setIsSubmitting(false);
-      reset();
+
+      //Navigate to  dashboard after short delay
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     }, 1000);
 
     console.log("✅ Form submitted successfully: ", data);
