@@ -10,8 +10,14 @@ function LoginPage() {
   const [successMessage, setSuccessMessage] = useState("");
 
   // Get auth functions and navigate
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // If already logged in, redirect immediately
+  if (isAuthenticated) {
+    navigate("/dashboard", { replace: true });
+    return null;
+  }
 
   // Setup React Hook Form with Zod validation
   const {
@@ -39,7 +45,7 @@ function LoginPage() {
 
       //Navigate to  dashboard after short delay
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }, 500);
     }, 1000);
 

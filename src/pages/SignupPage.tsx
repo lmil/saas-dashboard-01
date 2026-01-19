@@ -2,11 +2,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupFormData } from "../schemas/signupSchema";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   // State for loading and success
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // get auth function and navigate
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,22 +23,30 @@ function SignupPage() {
     resolver: zodResolver(signupSchema),
   });
 
+  if (Object.keys(errors).length > 0) {
+    console.log("Current errors:", errors);
+  }
+
   const onSubmit = (data: SignupFormData) => {
     setIsSubmitting(true);
     setSuccessMessage("");
 
-    //simulate api call with 1 second delay
+    //Simulate API call (in real app, this would create account on server)
     setTimeout(() => {
-      console.log("Form submitted with data: ", data);
-      setSuccessMessage("Account created successfully! 🎉"); // Show success
-      setIsSubmitting(false); // Stop loading
-      reset(); // Clear form
+      console.log("✅ Account created with data: ", data);
+
+      // Automatically log the user in with their new account
+      login(data.email, data.username);
+
+      setSuccessMessage("Account created successfully! Redirecting...");
+      setIsSubmitting(false);
+
+      // Navigate to the dashboard after some times
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     }, 1000);
   };
-
-  if (errors) {
-    console.log("Current errors:", errors);
-  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
