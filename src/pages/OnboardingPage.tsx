@@ -4,7 +4,7 @@ import ProgressIndicator from "../components/ProgressIndicator";
 
 function OnboardingPage() {
   // Track which step we're on (1, 2, 3 or 4)
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
 
   // Store all form data as we go
   const [formData, setformData] = useState<OnboardingFormData>({

@@ -3,52 +3,51 @@ type ProgressIndicatorProps = {
   steps: Array<{ label: string }>;
 };
 
-function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps) {
+function ProgressIndicator({ currentStep = 2, steps }: ProgressIndicatorProps) {
   return (
     <div className="mb-8">
       <div className="flex">
-        {/* Step 1 */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="relative flex w-full justify-center">
-            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold z-10">
-              1
-            </div>
-            <div className="absolute top-1/2 left-1/2 w-full h-1 bg-gray-300 -translate-y-1/2" />
-          </div>
-          <p className="mt-2 text-sm text-blue-600 font-bold text-center">
-            Personal info
-          </p>
-        </div>
+        {steps.map((step, index) => {
+          const stepNumber = index + 1;
+          const isCompleted = stepNumber < currentStep;
+          const isActive = stepNumber === currentStep;
+          const isUpcoming = stepNumber > currentStep;
 
-        {/* Step 2 */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="relative flex w-full justify-center">
-            <div className="w-10 h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-semibold z-10">
-              2
-            </div>
-            <div className="absolute top-1/2 left-1/2 w-full h-1 bg-gray-300 -translate-y-1/2" />
-          </div>
-          <p className="mt-2 text-sm text-gray-500 text-center">Company Info</p>
-        </div>
+          return (
+            <div key={stepNumber} className="flex flex-1 items-center flex-col">
+              <div className="relative flex w-full justify-center">
+                {/* circle */}
+                <div
+                  className={`w-10 h-10 rounded-full font-semibold flex items-center justify-center text-white z-10
+                    ${isCompleted ? "bg-green-500" : ""} 
+                    ${isActive ? "bg-blue-600" : ""} 
+                    ${isUpcoming ? "bg-gray-300 text-gray-600" : ""}`}
+                >
+                  {isCompleted ? "✓" : stepNumber}
+                </div>
 
-        {/* Step 3 */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="flex relative justify-center w-full">
-            <div className="w-10 h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-semibold z-10">
-              3
+                {/* Line (Show for all steps except the last one) */}
+                {stepNumber < steps.length && (
+                  <div
+                    className={`w-full h-1 absolute top-1/2 -translate-y-1/2 left-1/2
+                    ${isCompleted ? "bg-green-500" : "bg-gray-300"}`}
+                  ></div>
+                )}
+              </div>
+              {/* Label */}
+              <p
+                className={`
+                  mt-2 text-sm text-center
+                  ${isCompleted ? "text-green-600 font-medium" : ""}
+                  ${isActive ? "text-blue-600 font-bold" : ""}
+                  ${isUpcoming ? "text-gray-500" : ""}
+                `}
+              >
+                {step.label}
+              </p>
             </div>
-            <div className="absolute top-1/2 left-1/2 w-full h-1 bg-gray-300 -translate-y-1/2" />
-          </div>
-          <p className="mt-2 text-sm text-gray-500 text-center">Preferences</p>
-        </div>
-
-        {/* Step 4 (no line) */}
-        <div className="flex-1 flex flex-col items-center">
-          <div className="w-10 h-10 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-semibold z-10">
-            4
-          </div>
-          <p className="mt-2 text-sm text-gray-500 text-center">Review</p>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
