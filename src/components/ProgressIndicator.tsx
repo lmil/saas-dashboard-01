@@ -1,4 +1,9 @@
-function ProgressIndicator() {
+type ProgressIndicatorProps = {
+  currentStep: number;
+  steps: Array<{ label: string }>;
+};
+
+function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps) {
   return (
     <div className="mb-8">
       <div className="flex">

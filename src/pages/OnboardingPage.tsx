@@ -21,6 +21,14 @@ function OnboardingPage() {
     notifications: false,
   });
 
+  // Define steps statically (should be before the return statement)
+  const steps = [
+    { label: "Personal Info" },
+    { label: "Company Info" },
+    { label: "Preferences" },
+    { label: "Review" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
@@ -32,7 +40,7 @@ function OnboardingPage() {
         </p>
 
         {/* Progress Indicator */}
-        <ProgressIndicator />
+        <ProgressIndicator currentStep={currentStep} steps={steps} />
 
         {/* Step content will go here */}
         <div className="mt-8">
