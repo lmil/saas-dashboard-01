@@ -9,6 +9,7 @@ import { AuthProvider } from "./context/AuthContext";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import OnboardingPage from "./pages/OnboardingPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/onboarding" element={<OnboardingPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

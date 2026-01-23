@@ -29,6 +29,16 @@ function Navigation() {
           >
             Contact
           </NavLink>
+          <NavLink
+            to="/onboarding"
+            className={({ isActive }) =>
+              isActive
+                ? "font-semibold text-blue-600 border-b-2 pb-1 border-blue-600"
+                : "text-gray-600 pb-1 hover:text-blue-600 transition"
+            }
+          >
+            Onboarding
+          </NavLink>
           {isAuthenticated ? (
             // When LOGGED IN: Show Dashboard and Logout
             <>
