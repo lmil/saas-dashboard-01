@@ -1,5 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+// TODO: Make navigation responsive for mobile
+// - Hamburger menu on mobile
+// - Collapsible navigation
+// - Better spacing for small screens
+
 function Navigation() {
   const { isAuthenticated, user, login, logout } = useAuth();
 

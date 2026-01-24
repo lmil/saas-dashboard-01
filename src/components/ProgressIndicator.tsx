@@ -3,10 +3,10 @@ type ProgressIndicatorProps = {
   steps: Array<{ label: string }>;
 };
 
-function ProgressIndicator({ currentStep = 2, steps }: ProgressIndicatorProps) {
+function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps) {
   return (
     <div className="mb-8">
-      <div className="flex">
+      <div className="hidden md:flex">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
@@ -48,6 +48,26 @@ function ProgressIndicator({ currentStep = 2, steps }: ProgressIndicatorProps) {
             </div>
           );
         })}
+      </div>
+      {/* Mobile view */}
+      <div className="md:hidden text-center">
+        {/* Step counter */}
+        <div className="text-sm text-gray-600 mb-2">
+          Step {currentStep} of {steps.length}
+        </div>
+
+        {/* Current step label */}
+        <div className="font-semibold text-lg text-blue-600 mb-3">
+          {steps[currentStep - 1].label}
+        </div>
+
+        {/* Progress bar */}
+        <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+          <div
+            className="bg-blue-600 h-full transition-all duration-3000"
+            style={{ width: `${(currentStep / steps.length) * 100}%` }}
+          />
+        </div>
       </div>
     </div>
   );
