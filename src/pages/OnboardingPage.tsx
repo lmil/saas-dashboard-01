@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { type OnboardingFormData } from "../schemas/onboardingSchemas";
 import ProgressIndicator from "../components/ProgressIndicator";
+import PersonalInfoForm from "../components/PersonalInfoForm";
 
 function OnboardingPage() {
   // Track which step we're on (1, 2, 3 or 4)
   const [currentStep, setCurrentStep] = useState(2);
 
   // Store all form data as we go
-  const [formData, setformData] = useState<OnboardingFormData>({
+  const [formData, setFormData] = useState<OnboardingFormData>({
     // step 1 data
     name: "",
     email: "",
@@ -20,6 +21,8 @@ function OnboardingPage() {
     interests: [],
     notifications: false,
   });
+  // Temporary: Log formData whenever it changes
+  console.log("📦 Current formData:", formData);
 
   // Define steps statically (should be before the return statement)
   const steps = [
@@ -44,7 +47,46 @@ function OnboardingPage() {
 
         {/* Step content will go here */}
         <div className="mt-8">
-          <p className="text-gray-600">Current step: {currentStep}</p>
+          <PersonalInfoForm
+            initialData={{
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+            }}
+            onSubmit={(data) => {
+              console.log("Parent received validated data: ", data);
+              // Update parent's formData with validated data
+              setFormData({
+                ...formData,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+              });
+              // Move to next step AFTER data is saved
+              setCurrentStep(2);
+            }}
+          />
+
+          {/* Temporary Navigation Buttons */}
+          <div className="mt-6 flex gap-4">
+            {currentStep > 1 && (
+              <button
+                type="button"
+                onClick={() => setCurrentStep(currentStep - 1)}
+                className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition"
+              >
+                Previous
+              </button>
+            )}
+
+            <button
+              type="submit"
+              form="personal-info-form"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Next (Test)
+            </button>
+          </div>
         </div>
 
         {/* Navigation buttons will go here */}
