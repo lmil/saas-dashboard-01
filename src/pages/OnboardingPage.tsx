@@ -2,10 +2,11 @@ import { useState } from "react";
 import { type OnboardingFormData } from "../schemas/onboardingSchemas";
 import ProgressIndicator from "../components/ProgressIndicator";
 import PersonalInfoForm from "../components/PersonalInfoForm";
+import CompanyInfoForm from "../components/CompanyInfoForm";
 
 function OnboardingPage() {
   // Track which step we're on (1, 2, 3 or 4)
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
 
   // Store all form data as we go
   const [formData, setFormData] = useState<OnboardingFormData>({
@@ -47,26 +48,50 @@ function OnboardingPage() {
 
         {/* Step content will go here */}
         <div className="mt-8">
-          <PersonalInfoForm
-            initialData={{
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-            }}
-            onSubmit={(data) => {
-              console.log("Parent received validated data: ", data);
-              // Update parent's formData with validated data
-              setFormData({
-                ...formData,
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-              });
-              // Move to next step AFTER data is saved
-              setCurrentStep(2);
-            }}
-          />
-
+          {currentStep === 1 && (
+            <PersonalInfoForm
+              initialData={{
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+              }}
+              onSubmit={(data) => {
+                console.log("Parent received validated data: ", data);
+                // Update parent's formData with validated data
+                setFormData({
+                  ...formData,
+                  name: data.name,
+                  email: data.email,
+                  phone: data.phone,
+                });
+                // Move to next step AFTER data is saved
+                setCurrentStep(2);
+              }}
+            />
+          )}
+          {/* 
+          //TODO re learn about this 'data' variable
+           */}
+          {currentStep === 2 && (
+            <CompanyInfoForm
+              initialData={{
+                company: formData.company,
+                role: formData.role,
+                teamSize: formData.teamSize,
+              }}
+              onSubmit={(data) => {
+                console.log("Company info received: ", data);
+                setFormData({
+                  ...formData,
+                  company: data.company,
+                  role: data.role,
+                  teamSize: data.teamSize,
+                });
+                // Move to next step
+                setCurrentStep(3);
+              }}
+            />
+          )}
           {/* Temporary Navigation Buttons */}
           <div className="mt-6 flex gap-4">
             {currentStep > 1 && (
@@ -81,10 +106,12 @@ function OnboardingPage() {
 
             <button
               type="submit"
-              form="personal-info-form"
+              form={
+                currentStep === 1 ? "personal-info-form" : "company-info-form"
+              }
               className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
             >
-              Next (Test)
+              Next
             </button>
           </div>
         </div>

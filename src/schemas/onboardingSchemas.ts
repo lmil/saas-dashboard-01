@@ -16,8 +16,8 @@ export const onboardingSchema = z.object({
   phone: z.string().min(10, "Phone must be at least 10 digits"),
 
   // Step 2: Company info
-  company: z.string().min(2, "Company name required"),
-  role: z.string().min(2, "Role required"),
+  company: z.string().min(2, "Company name must be at least 2 characters"),
+  role: z.string().min(2, "Role must be at least 2 characters"),
   teamSize: z.string().min(1, "Please select team size"),
 
   // Step 3: Preference
