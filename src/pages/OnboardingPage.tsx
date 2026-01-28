@@ -107,7 +107,13 @@ function OnboardingPage() {
             <button
               type="submit"
               form={
-                currentStep === 1 ? "personal-info-form" : "company-info-form"
+                currentStep === 1
+                  ? "personal-info-form"
+                  : currentStep === 2
+                    ? "company-info-form"
+                    : currentStep === 3
+                      ? "preferences-form"
+                      : "review-form"
               }
               className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
             >
