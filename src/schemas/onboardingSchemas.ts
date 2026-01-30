@@ -21,7 +21,7 @@ export const onboardingSchema = z.object({
   teamSize: z.string().min(1, "Please select team size"),
 
   // Step 3: Preference
-  interests: z.array(z.string().min(1, "Select at least one interest")),
+  interests: z.array(z.string()).min(1, "Select at least one interest"),
   notifications: z.boolean().default(false),
 });
 

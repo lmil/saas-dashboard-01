@@ -3,6 +3,7 @@ import { type OnboardingFormData } from "../schemas/onboardingSchemas";
 import ProgressIndicator from "../components/ProgressIndicator";
 import PersonalInfoForm from "../components/PersonalInfoForm";
 import CompanyInfoForm from "../components/CompanyInfoForm";
+import PreferencesForm from "../components/PreferencesForm";
 
 function OnboardingPage() {
   // Track which step we're on (1, 2, 3 or 4)
@@ -70,7 +71,8 @@ function OnboardingPage() {
             />
           )}
           {/* 
-          //TODO re learn about this 'data' variable
+          // TODO re learn about this 'data' variable
+          // Done
            */}
           {currentStep === 2 && (
             <CompanyInfoForm
@@ -89,6 +91,18 @@ function OnboardingPage() {
                 });
                 // Move to next step
                 setCurrentStep(3);
+              }}
+            />
+          )}
+          {currentStep === 3 && (
+            <PreferencesForm
+              initialData={{
+                interests: formData.interests,
+                notifications: formData.notifications,
+              }}
+              onSubmit={(data) => {
+                setFormData({ ...formData, ...data });
+                setCurrentStep(4);
               }}
             />
           )}
