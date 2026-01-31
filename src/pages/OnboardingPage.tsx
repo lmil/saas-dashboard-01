@@ -8,6 +8,8 @@ import PreferencesForm from "../components/PreferencesForm";
 function OnboardingPage() {
   // Track which step we're on (1, 2, 3 or 4)
   const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  console.log("📋 completedSteps:", completedSteps);
 
   // Store all form data as we go
   const [formData, setFormData] = useState<OnboardingFormData>({
@@ -45,7 +47,11 @@ function OnboardingPage() {
         </p>
 
         {/* Progress Indicator */}
-        <ProgressIndicator currentStep={currentStep} steps={steps} />
+        <ProgressIndicator
+          currentStep={currentStep}
+          steps={steps}
+          completedSteps={completedSteps}
+        />
 
         {/* Step content will go here */}
         <div className="mt-8">
@@ -65,6 +71,10 @@ function OnboardingPage() {
                   email: data.email,
                   phone: data.phone,
                 });
+                // Mark step 1 as complete
+                if (!completedSteps.includes(1)) {
+                  setCompletedSteps([...completedSteps, 1]);
+                }
                 // Move to next step AFTER data is saved
                 setCurrentStep(2);
               }}
@@ -89,6 +99,9 @@ function OnboardingPage() {
                   role: data.role,
                   teamSize: data.teamSize,
                 });
+                // Mark step 2 as completed
+                if (!completedSteps.includes(2))
+                  setCompletedSteps([...completedSteps, 2]);
                 // Move to next step
                 setCurrentStep(3);
               }}
@@ -102,6 +115,8 @@ function OnboardingPage() {
               }}
               onSubmit={(data) => {
                 setFormData({ ...formData, ...data });
+                if (!completedSteps.includes(3))
+                  setCompletedSteps([...completedSteps, 3]);
                 setCurrentStep(4);
               }}
             />
@@ -111,7 +126,13 @@ function OnboardingPage() {
             {currentStep > 1 && (
               <button
                 type="button"
-                onClick={() => setCurrentStep(currentStep - 1)}
+                onClick={() => {
+                  const previousStep = currentStep - 1;
+                  setCurrentStep(previousStep);
+                  setCompletedSteps(
+                    completedSteps.filter((step) => step !== previousStep),
+                  );
+                }}
                 className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition"
               >
                 Previous

@@ -1,15 +1,21 @@
 type ProgressIndicatorProps = {
   currentStep: number;
   steps: Array<{ label: string }>;
+  completedSteps: number[];
 };
 
-function ProgressIndicator({ currentStep, steps }: ProgressIndicatorProps) {
+function ProgressIndicator({
+  currentStep,
+  steps,
+  completedSteps,
+}: ProgressIndicatorProps) {
   return (
     <div className="mb-8">
       <div className="hidden md:flex">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
-          const isCompleted = stepNumber < currentStep;
+          const isCompleted =
+            completedSteps.includes(stepNumber) && stepNumber !== currentStep;
           const isActive = stepNumber === currentStep;
           const isUpcoming = stepNumber > currentStep;
 
